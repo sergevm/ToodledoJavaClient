@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 public class AddTasksResponse extends Response<Task[]> {
 
-	public AddTasksResponse(Request request) {
-		super(request);
+	public AddTasksResponse(Session session, Request request) {
+		super(session, request);
 	}
 
 	@Override

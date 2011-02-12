@@ -6,12 +6,14 @@ public abstract class Response<T> {
 	
 	private String response;
 	private Request request;
+	protected Session session;
 		
-	protected Response(Request request) {
+	protected Response(final Session session, final Request request) {
 		this.request = request;
+		this.session = session;
 	}
 	
-	abstract T parse() throws JSONException, Exception;
+	public abstract T parse() throws JSONException, Exception;
 	
 	protected String getResponse() throws JSONException, Exception {
 		if(response == null) {
@@ -27,5 +29,9 @@ public abstract class Response<T> {
 	
 	public int getResponseCode() {
 		return request.getResponseCode();
+	}
+	
+	public Session getSession() {
+		return session;
 	}
 }

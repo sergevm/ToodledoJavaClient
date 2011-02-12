@@ -6,8 +6,6 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class AccountResponse extends Response<Account> {
 
 	public final static String TAG = AccountResponse.class.getSimpleName();
@@ -15,14 +13,14 @@ public class AccountResponse extends Response<Account> {
 	private final Session session;
 
 	public AccountResponse(Session session, Request request) {
-		super(request);
+		super(session, request);
 		this.session = session;
 	}
 
 	@Override
-	Account parse() throws JSONException, Exception {
+	public Account parse() throws JSONException, Exception {
 		if (getResponse() == null || getResponse() == "") {
-			Log.d(TAG, "Get request for account info returned empty response");
+			session.Log(TAG, "Get request for account info returned empty response");
 			return null;
 		}
 
@@ -31,12 +29,12 @@ public class AccountResponse extends Response<Account> {
 
 		long lastEditTask = json.getLong("lastedit_task");
 		Date lastEditDate = new Date(lastEditTask * 1000);
-		Log.d(TAG, String.format("Last edit date reported by Toodledo is %s", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(lastEditDate)));
+		session.Log(TAG, String.format("Last edit date reported by Toodledo is %s", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(lastEditDate)));
 		account.setLastEditTask(lastEditTask);
 
 		long lastDeleteTask = json.getLong("lastdelete_task");
 		Date lastDeleteDate = new Date(lastDeleteTask * 1000);
-		Log.d(TAG, String.format("Last delete date reported by Toodledo is %s", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(lastDeleteDate)));
+		session.Log(TAG, String.format("Last delete date reported by Toodledo is %s", new SimpleDateFormat("dd/MM/yyyy HH:mm").format(lastDeleteDate)));
 		account.setLastDeleteTask(lastDeleteTask);
 
 		switch (json.getInt("dateformat")) {

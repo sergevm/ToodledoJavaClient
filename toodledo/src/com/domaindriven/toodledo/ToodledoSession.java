@@ -3,9 +3,12 @@ package com.domaindriven.toodledo;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
-import android.util.Log;
-
 public class ToodledoSession implements Session {
+	
+	public interface Log {
+		void log(final String tag, final String message);
+	}
+	
 	private static final double A_LITTLE_LESS_THAN_4_HOURS = 1000 * 60 * 60 * 3.99;
 	private static final String TAG = Session.class.getSimpleName();
 	
@@ -13,8 +16,10 @@ public class ToodledoSession implements Session {
 	private static String sessionToken;
 	private static String key;
 	private String user;
+	private static Log log;
 	
-	public static Session create(final String user, final String password) {
+	public static Session create(final String user, final String password, final Log log) {
+		ToodledoSession.log = log;
 		ToodledoSession session = new ToodledoSession(user);
 		session.create(password);
 		return session;
@@ -36,13 +41,13 @@ public class ToodledoSession implements Session {
 
 	private void create(final String password) {
 		if (isExpired()) {
-			Log.v(TAG, "Session token expired. Retrieving a new token ...");
+			log.log(TAG, "Session token expired. Retrieving a new token ...");
 	
 			sessionTokenTime = Calendar.getInstance();
 			sessionToken = requestSessionToken(getUserId());
 			key = calculateKeyFrom(password, sessionToken);
 	
-			Log.v(TAG, "Session token requested and acquired.");
+			log.log(TAG, "Session token requested and acquired.");
 		}
 	}
 
@@ -58,8 +63,8 @@ public class ToodledoSession implements Session {
 
 	private String requestSessionToken(final String userId) {
 
-		SessionTokenRequest request = new SessionTokenRequest(userId);
-		SessionTokenResponse response = new SessionTokenResponse(request);
+		SessionTokenRequest request = new SessionTokenRequest(userId, log);
+		SessionTokenResponse response = new SessionTokenResponse(log, request);
 		
 		return response.parse();
 	}
@@ -68,9 +73,14 @@ public class ToodledoSession implements Session {
 		try {
 			return MD5Helper.calculate(MD5Helper.calculate(password) + Constants.TOODLEDO_APPTOKEN + sessionToken);
 		} catch (NoSuchAlgorithmException e) {
-			Log.e(TAG, e.getMessage());
+			log.log(TAG, e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void Log(String tag, String logmessage) {
+		log.log(tag, logmessage);
 	}
 }

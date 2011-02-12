@@ -3,21 +3,23 @@ package com.domaindriven.toodledo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import com.domaindriven.toodledo.ToodledoSession.Log;
 
 public class SessionTokenResponse extends Response<String> {
 	
 	private final static String TAG = SessionTokenResponse.class.getSimpleName();
+	private Log log;
 
-	protected SessionTokenResponse(Request request) {
-		super(request);
+	protected SessionTokenResponse(Log log, Request request) {
+		super(null, request);
+		this.log = log;
 	}
 
 	@Override
-	String parse() {
+	public String parse() {
 		try {
 			if (getResponse() == null || getResponse() == "") {
-				Log.w(TAG, "SessionTokenRequest returned empty response");
+				log.log(TAG, "SessionTokenRequest returned empty response");
 				return null;
 			}
 	
@@ -26,7 +28,7 @@ public class SessionTokenResponse extends Response<String> {
 			return token;
 	
 		} catch (JSONException ex) {
-			Log.e(TAG, ex.getMessage());
+			log.log(TAG, ex.getMessage());
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();

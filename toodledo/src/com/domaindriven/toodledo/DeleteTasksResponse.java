@@ -6,12 +6,12 @@ import org.json.JSONObject;
 
 public class DeleteTasksResponse extends Response<String[]> {
 
-	protected DeleteTasksResponse(Request request) {
-		super(request);
+	protected DeleteTasksResponse(Session session, Request request) {
+		super(session, request);
 	}
 
 	@Override
-	String[] parse() throws JSONException, Exception {
+	public String[] parse() throws JSONException, Exception {
 		
 		String response = getResponse();
 		JSONArray json = new JSONArray(response);

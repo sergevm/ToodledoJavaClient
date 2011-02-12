@@ -3,7 +3,7 @@ package com.domaindriven.toodledo;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
-import com.domaindriven.toodledo.RestClient.RequestMethod;
+import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
 
 public class AddTasksRequest extends Request {
 
