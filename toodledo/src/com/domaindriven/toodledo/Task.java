@@ -4,6 +4,7 @@ public class Task {
 
 	private String id;
 	private String title;
+	private long modified;
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -21,4 +22,11 @@ public class Task {
 		return id;
 	}
 
+	public void setModified(long modified) {
+		this.modified = modified;
+	}
+
+	public long getModified() {
+		return modified;
+	}
 }

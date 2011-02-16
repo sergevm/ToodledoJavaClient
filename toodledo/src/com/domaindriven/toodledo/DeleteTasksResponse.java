@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class DeleteTasksResponse extends Response<String[]> {
 
-	protected DeleteTasksResponse(Session session, Request request) {
+	public DeleteTasksResponse(Session session, Request request) {
 		super(session, request);
 	}
 

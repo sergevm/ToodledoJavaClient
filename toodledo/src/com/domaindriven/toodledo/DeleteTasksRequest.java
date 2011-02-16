@@ -11,8 +11,8 @@ public class DeleteTasksRequest extends Request {
 	
 	private final String[] keys;
 
-	public DeleteTasksRequest(Session authentication, RequestMethod method, String[] keys) {
-		super(authentication, method);
+	public DeleteTasksRequest(Session authentication, String[] keys) {
+		super(authentication, RequestMethod.POST);
 		this.keys = keys;
 	}
 

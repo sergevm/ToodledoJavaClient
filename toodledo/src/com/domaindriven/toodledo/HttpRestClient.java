@@ -20,19 +20,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
+
 /*
  * Taken from http://lukencode.com/2010/04/27/calling-web-services-in-android-using-httpclient/
  */
 public class HttpRestClient implements RestClient {
-	
-	public enum RequestMethod
-	{
-		GET,
-		POST
-	}
-    
+	    
 	private ArrayList <NameValuePair> params;
     private ArrayList <NameValuePair> headers;
+    
+    public enum RequestMethod {
+    	GET,
+    	POST
+    }
  
     private String url;
  

@@ -1,5 +1,6 @@
 package com.domaindriven.toodledo;
 
+
 public class HttpRestClientFactory implements RestClientFactory {
 
 	@Override

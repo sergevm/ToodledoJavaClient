@@ -12,13 +12,13 @@ public class Account {
 	
 	private static final String TAG = Account.class.getSimpleName();
 	
-	public static Account create(final Session authentication) {
+	public static Account create(final Session session) {
 
 		Log.v(TAG, "Getting account info");
 		
 		try {
-			AccountRequest request = new AccountRequest(authentication);
-			AccountResponse response = new AccountResponse(authentication, request);
+			AccountRequest request = new AccountRequest(session);
+			AccountResponse response = new AccountResponse(session, request);
 			Log.v(TAG, "Account info retrieved");
 			return response.parse();
 		} catch (Exception e) {
