@@ -1,5 +1,7 @@
 package com.domaindriven.toodledo;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONStringer;
 
@@ -9,9 +11,9 @@ public class DeleteTasksRequest extends Request {
 
 	final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/delete.php?key=%s";
 	
-	private final String[] keys;
+	private final List<String> keys;
 
-	public DeleteTasksRequest(Session authentication, String[] keys) {
+	public DeleteTasksRequest(Session authentication, List<String> keys) {
 		super(authentication, RequestMethod.POST);
 		this.keys = keys;
 	}

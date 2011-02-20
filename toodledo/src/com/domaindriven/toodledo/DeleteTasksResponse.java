@@ -1,25 +1,28 @@
 package com.domaindriven.toodledo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DeleteTasksResponse extends Response<String[]> {
+public class DeleteTasksResponse extends Response<List<String>> {
 
 	public DeleteTasksResponse(Session session, Request request) {
 		super(session, request);
 	}
 
 	@Override
-	public String[] parse() throws JSONException, Exception {
+	public List<String> parse() throws JSONException, Exception {
 		
 		String response = getResponse();
 		JSONArray json = new JSONArray(response);
 		
-		String[] result = new String[json.length()];
+		List<String> result = new ArrayList<String>();
 		for(int index = 0; index < json.length(); index++) {
 			JSONObject confirmed = json.getJSONObject(index);
-			result[index] = confirmed.getString("id");
+			result.add(confirmed.getString("id"));
 		}
 		
 		return result;

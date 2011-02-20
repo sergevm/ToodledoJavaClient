@@ -1,5 +1,7 @@
 package com.domaindriven.toodledo;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONStringer;
 
@@ -9,9 +11,9 @@ public class AddTasksRequest extends Request {
 
 	final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/add.php?key=%s";
 
-	Task[] tasks;
+	List<Task> tasks;
 	
-	public AddTasksRequest(Session authentication, Task[] tasks) {
+	public AddTasksRequest(Session authentication, List<Task> tasks) {
 		super(authentication, RequestMethod.POST);
 		this.tasks = tasks;
 	}
