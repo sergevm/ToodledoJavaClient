@@ -9,12 +9,16 @@ import org.json.JSONObject;
 
 public class DeleteTasksResponse extends Response<List<String>> {
 
+	private final static String TAG = DeleteTasksResponse.class.getSimpleName();
+	
 	public DeleteTasksResponse(Session session, Request request) {
 		super(session, request);
 	}
 
 	@Override
 	public List<String> parse() throws JSONException, Exception {
+		
+		session.Log(TAG, getResponse());
 		
 		String response = getResponse();
 		JSONArray json = new JSONArray(response);

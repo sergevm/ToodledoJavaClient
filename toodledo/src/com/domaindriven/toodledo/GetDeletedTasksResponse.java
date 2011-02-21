@@ -9,12 +9,16 @@ import org.json.JSONObject;
 
 public class GetDeletedTasksResponse extends Response<List<String>> {
 
+	private final static String TAG = GetDeletedTasksResponse.class.getSimpleName();
+	
 	public GetDeletedTasksResponse(Session session, Request request) {
 		super(session, request);
 	}
 
 	@Override
 	public List<String> parse() throws JSONException, Exception {
+		
+		session.Log(TAG, getResponse());
 		
 		List<String> ids = new ArrayList<String>();
 		
