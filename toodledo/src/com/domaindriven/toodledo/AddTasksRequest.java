@@ -9,6 +9,7 @@ import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
 
 public class AddTasksRequest extends Request {
 
+	final static String TAG = AddTasksRequest.class.getSimpleName();
 	final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/add.php?key=%s";
 
 	List<Task> tasks;
@@ -20,6 +21,9 @@ public class AddTasksRequest extends Request {
 	
 	@Override
 	public String execute() throws Exception {
+		
+		session.Log(TAG, getUrl());
+		
 		String body = formatJSON();
 		addParameter("tasks", body);
 		String response = super.execute();

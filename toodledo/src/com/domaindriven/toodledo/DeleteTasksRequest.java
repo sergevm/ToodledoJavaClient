@@ -9,6 +9,7 @@ import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
 
 public class DeleteTasksRequest extends Request {
 
+	final static String TAG = DeleteTasksRequest.class.getSimpleName();
 	final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/delete.php?key=%s";
 	
 	private final List<String> keys;
@@ -25,6 +26,9 @@ public class DeleteTasksRequest extends Request {
 	
 	@Override
 	public String execute() throws Exception {
+		
+		session.Log(TAG, getUrl());
+		
 		String body = formatJSON();
 		addParameter("tasks", body);
 		String response = super.execute();

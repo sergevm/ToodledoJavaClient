@@ -4,6 +4,7 @@ import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
 
 public class GetDeletedTasksRequest extends Request {
 
+	public final static String TAG = GetDeletedTasksRequest.class.getSimpleName();
 	public final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/deleted.php?key=%s;after=%d";
 	
 	private final String url;
@@ -16,5 +17,11 @@ public class GetDeletedTasksRequest extends Request {
 	@Override
 	protected String getUrl() {
 		return this.url;
+	}
+	
+	@Override
+	public String execute() throws Exception {
+		session.Log(TAG, getUrl());
+		return super.execute();
 	}
 }
