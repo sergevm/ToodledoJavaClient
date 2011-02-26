@@ -4,6 +4,7 @@ public class Task {
 
 	private String id;
 	private String title;
+	private Boolean completed;
 	private long modified;
 
 	public void setTitle(String title) {
@@ -28,5 +29,13 @@ public class Task {
 
 	public long getModified() {
 		return modified;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
+
+	public Boolean getCompleted() {
+		return completed;
 	}
 }
