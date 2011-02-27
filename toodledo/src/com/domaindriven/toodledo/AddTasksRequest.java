@@ -1,11 +1,10 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONStringer;
-
-import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
+import com.google.gson.stream.JsonWriter;
 
 public class AddTasksRequest extends Request {
 
@@ -14,11 +13,11 @@ public class AddTasksRequest extends Request {
 
 	List<Task> tasks;
 	
-	public AddTasksRequest(Session authentication, List<Task> tasks) {
-		super(authentication, RequestMethod.POST);
+	public AddTasksRequest(Session authentication, List<Task> tasks, RestClientFactory factory) {
+		super(authentication, factory, RequestMethod.POST);
 		this.tasks = tasks;
 	}
-	
+
 	@Override
 	public String execute() throws Exception {
 		
@@ -31,18 +30,25 @@ public class AddTasksRequest extends Request {
 		return response;
 	}
 
-	private String formatJSON() throws JSONException {
+	private String formatJSON() throws IOException {
 		
-		JSONStringer jsonWriter = new JSONStringer();
-		jsonWriter.array();
+		StringWriter sw = new StringWriter();
+		JsonWriter jsonWriter = new JsonWriter(sw);
+		
+		jsonWriter.beginArray();
 		
 		for(Task task : tasks) {
-			jsonWriter.object().key("title").value(task.getTitle()).endObject();
+			jsonWriter.beginObject();
+			jsonWriter.name("title").value(task.getTitle());
+			jsonWriter.endObject();
 		}
 		
 		jsonWriter.endArray();
 		
-		return jsonWriter.toString();
+		String json = sw.toString();
+		sw.close();
+		
+		return json;
 	}
 
 	@Override

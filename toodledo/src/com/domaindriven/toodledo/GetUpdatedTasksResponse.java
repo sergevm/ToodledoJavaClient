@@ -3,9 +3,10 @@ package com.domaindriven.toodledo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class GetUpdatedTasksResponse extends Response<List<Task>> {
 
@@ -16,34 +17,38 @@ public class GetUpdatedTasksResponse extends Response<List<Task>> {
 	}
 
 	@Override
-	public List<Task> parse() throws JSONException, Exception {
+	public List<Task> parse() throws Exception {
 		
-		JSONArray jsonArray = createJSONArray(getResponse());
-		JSONObject info = jsonArray.getJSONObject(0);
+		session.Log(TAG, getResponse());
 		
-		long updatedCount = info.getLong("num");
-		
-		session.Log(TAG, String.format(
-				"Number of modified tasks returned by Toodledo: %d", updatedCount));
-				
 		List<Task> tasks = new ArrayList<Task>();
 		
-		if(updatedCount == 0) {
+		JsonElement element = new JsonParser().parse(getResponse());
+		if(element.isJsonArray() == false) {
 			return tasks;
 		}
 		
-		for(int index = 1; index <= jsonArray.length() - 1; index++) {
+		JsonArray jsonArray = element.getAsJsonArray();
+		
+		JsonObject info = jsonArray.get(0).getAsJsonObject();
+		int updatedCount = new Integer(info.getAsJsonPrimitive("num").getAsInt());
+		
+		if(updatedCount == 0) return tasks;
+				
+		for(int index = 1; index <= updatedCount; index++) {
 			
-			JSONObject json = jsonArray.getJSONObject(index);
+			JsonObject item = jsonArray.get(index).getAsJsonObject();
+			
+			if(isError(item)) continue;
 			
 			Task task = new Task();
-			task.setId(json.getString("id"));
-			task.setTitle(json.getString("title"));
-			task.setModified(json.getLong("modified"));
+			task.setId(item.getAsJsonPrimitive("id").getAsString());
+			task.setTitle(item.getAsJsonPrimitive("title").getAsString());
+			task.setModified(item.getAsJsonPrimitive("modified").getAsLong());
 			
 			tasks.add(task);
 		}
-		
-		return tasks;
+	
+		return tasks;		
 	}
 }

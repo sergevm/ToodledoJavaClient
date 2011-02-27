@@ -2,8 +2,6 @@ package com.domaindriven.toodledo;
 
 import java.util.HashMap;
 
-import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
-
 public abstract class Request {
 
 	private RestClient client;
@@ -11,10 +9,6 @@ public abstract class Request {
 	protected final Session session;
 	private final HashMap<String, String> parameters;
 	private final RestClientFactory clientFactory;
-
-	public Request(Session authentication, RequestMethod method) {
-		this(authentication, new HttpRestClientFactory(), method);
-	}
 
 	public Request(Session session, RestClientFactory clientFactory, RequestMethod method) {
 		this.method = method;

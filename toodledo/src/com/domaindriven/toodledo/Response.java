@@ -1,8 +1,6 @@
 package com.domaindriven.toodledo;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 public abstract class Response<T> {
 
@@ -10,49 +8,19 @@ public abstract class Response<T> {
 	private Request request;
 	protected Session session;
 
-	private final String TAG = getClass().getSimpleName();
-
 	protected Response(final Session session, final Request request) {
 		this.request = request;
 		this.session = session;
 	}
 
-	public abstract T parse() throws JSONException, Exception;
+	public abstract T parse() throws Exception;
 
-	protected String getResponse() throws JSONException, Exception {
+	protected String getResponse() throws Exception {
 		if (response == null) {
 			response = request.execute();
 		}
 
 		return response;
-	}
-
-	protected JSONArray createJSONArray(String json) throws JSONException {
-
-		JSONArray jsonArray = null;
-
-		try {
-			jsonArray = new JSONArray(json);
-		} catch(JSONException e) {
-			JSONObject jsonObject = new JSONObject(json);
-
-			if (jsonObject.has("errorCode") && jsonObject.has("errorDesc")) {
-				session.Log(TAG, String.format("JSON response contains error: %s", json));
-			}
-		}
-
-		return jsonArray;
-	}
-
-	protected JSONObject createJSONObject(String json) throws JSONException {
-
-		JSONObject jsonObject = new JSONObject(json);
-
-		if (jsonObject.has("errorCode") && jsonObject.has("errorDesc")) {
-			session.Log(TAG, String.format("JSON response contains error: %s", json));
-		}
-
-		return jsonObject;
 	}
 
 	public String getErrorMessage() {
@@ -65,5 +33,13 @@ public abstract class Response<T> {
 
 	public Session getSession() {
 		return session;
+	}
+
+	/**
+	 * @param jsonObject
+	 * @return
+	 */
+	protected boolean isError(JsonObject jsonObject) {
+		return jsonObject.has("errorCode") && jsonObject.has("errorDesc");
 	}
 }

@@ -16,10 +16,13 @@ public class ToodledoSession implements Session {
 	private static String sessionToken;
 	private static String key;
 	private String user;
-	private static Log log;
 	
-	public static Session create(final String user, final String password, final Log log) {
+	private static Log log;
+	private static RestClientFactory factory;
+	
+	public static Session create(final String user, final String password, final Log log, final RestClientFactory factory) {
 		ToodledoSession.log = log;
+		ToodledoSession.factory = factory;
 		ToodledoSession session = new ToodledoSession(user);
 		session.create(password);
 		return session;
@@ -63,7 +66,7 @@ public class ToodledoSession implements Session {
 
 	private String requestSessionToken(final String userId) {
 
-		SessionTokenRequest request = new SessionTokenRequest(userId, log);
+		SessionTokenRequest request = new SessionTokenRequest(userId, log, factory);
 		SessionTokenResponse response = new SessionTokenResponse(log, request);
 		
 		return response.parse();

@@ -1,16 +1,15 @@
 package com.domaindriven.toodledo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.domaindriven.toodledo.ToodledoSession.Log;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class SessionTokenResponse extends Response<String> {
 	
 	private final static String TAG = SessionTokenResponse.class.getSimpleName();
 	private Log log;
 
-	protected SessionTokenResponse(Log log, Request request) {
+	public SessionTokenResponse(Log log, Request request) {
 		super(null, request);
 		this.log = log;
 	}
@@ -22,14 +21,15 @@ public class SessionTokenResponse extends Response<String> {
 				log.log(TAG, "SessionTokenRequest returned empty response");
 				return null;
 			}
-	
-			JSONObject json = new JSONObject(getResponse());
-			String token = json.getString("token");
+				
+			JsonParser parser = new JsonParser();
+			JsonObject object = (JsonObject)parser.parse(getResponse());
+			
+			if(isError(object)) return null;
+			
+			String token = object.getAsJsonPrimitive("token").getAsString();
+			
 			return token;
-	
-		} catch (JSONException ex) {
-			log.log(TAG, ex.getMessage());
-			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

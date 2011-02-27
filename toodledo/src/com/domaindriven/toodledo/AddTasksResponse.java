@@ -3,9 +3,10 @@ package com.domaindriven.toodledo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class AddTasksResponse extends Response<List<Task>> {
 
@@ -16,22 +17,26 @@ public class AddTasksResponse extends Response<List<Task>> {
 	}
 
 	@Override
-	public List<Task> parse() throws JSONException, Exception {
+	public List<Task> parse() throws Exception {
 		
 		session.Log(TAG, getResponse());
 		
-		JSONArray jsonTasks = new JSONArray(getResponse());
+		JsonElement json = new JsonParser().parse(getResponse());
+		JsonArray jsonTasks = json.getAsJsonArray();
 
 		List<Task> tasks = new ArrayList<Task>();
 
-		for(int index = 0; index < jsonTasks.length(); index++) {
-
-			JSONObject jsonTask = jsonTasks.getJSONObject(index);
+		for(int index = 0; index < jsonTasks.size(); index++) {
+			
+			JsonObject jsonTask = (JsonObject) jsonTasks.get(index);
+			
+			if(isError(jsonTask)) continue;
 
 			Task task = new Task();
-			task.setId(jsonTask.getString("id"));
-			task.setTitle(jsonTask.getString("title"));
-			task.setModified(jsonTask.getLong("modified"));
+			task.setId(jsonTask.getAsJsonPrimitive("id").getAsString());
+			task.setTitle(jsonTask.getAsJsonPrimitive("title").getAsString());
+			task.setModified(jsonTask.getAsJsonPrimitive("modified").getAsLong());
+			task.setCompleted(GsonHelpers.parseBoolean(jsonTask, "completed"));
 
 			tasks.add(task);
 		}

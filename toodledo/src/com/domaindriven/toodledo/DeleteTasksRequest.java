@@ -1,11 +1,10 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONStringer;
-
-import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
+import com.google.gson.stream.JsonWriter;
 
 public class DeleteTasksRequest extends Request {
 
@@ -14,8 +13,8 @@ public class DeleteTasksRequest extends Request {
 	
 	private final List<String> keys;
 
-	public DeleteTasksRequest(Session authentication, List<String> keys) {
-		super(authentication, RequestMethod.POST);
+	public DeleteTasksRequest(Session authentication, List<String> keys, RestClientFactory factory) {
+		super(authentication, factory, RequestMethod.POST);
 		this.keys = keys;
 	}
 
@@ -36,10 +35,11 @@ public class DeleteTasksRequest extends Request {
 		return response;
 	}
 
-	private String formatJSON() throws JSONException {
+	private String formatJSON() throws IOException {
+		StringWriter sw = new StringWriter();
+		JsonWriter jsonWriter = new JsonWriter(sw);
 		
-		JSONStringer jsonWriter = new JSONStringer();
-		jsonWriter.array();
+		jsonWriter.beginArray();
 		
 		for(String key : keys) {
 			jsonWriter.value(key);
@@ -47,6 +47,9 @@ public class DeleteTasksRequest extends Request {
 		
 		jsonWriter.endArray();
 		
-		return jsonWriter.toString();
+		String json = sw.toString();
+		sw.close();
+		
+		return json;
 	}
 }

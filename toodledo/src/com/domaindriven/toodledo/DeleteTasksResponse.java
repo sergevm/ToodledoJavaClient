@@ -3,30 +3,42 @@ package com.domaindriven.toodledo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class DeleteTasksResponse extends Response<List<String>> {
 
-	private final static String TAG = DeleteTasksResponse.class.getSimpleName();
+	public final static String TAG = DeleteTasksResponse.class.getSimpleName();
 	
 	public DeleteTasksResponse(Session session, Request request) {
 		super(session, request);
 	}
 
 	@Override
-	public List<String> parse() throws JSONException, Exception {
+	public List<String> parse() throws Exception {
 		
 		session.Log(TAG, getResponse());
-		
-		String response = getResponse();
-		JSONArray json = new JSONArray(response);
-		
+
 		List<String> result = new ArrayList<String>();
-		for(int index = 0; index < json.length(); index++) {
-			JSONObject confirmed = json.getJSONObject(index);
-			result.add(confirmed.getString("id"));
+
+		JsonElement json = new JsonParser().parse(getResponse());
+		
+		if(json.isJsonArray() == false) {
+			return result;
+		}
+		
+		JsonArray jsonTasks = json.getAsJsonArray();
+		
+		for(int index = 0; index < jsonTasks.size(); index++) {
+			
+			JsonObject jsonObject = jsonTasks.get(index).getAsJsonObject();
+			
+			if(isError(jsonObject)) continue;
+			
+			String jsonTaskId = jsonObject.getAsJsonPrimitive("id").getAsString();
+			result.add(jsonTaskId);
 		}
 		
 		return result;

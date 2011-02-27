@@ -1,7 +1,5 @@
 package com.domaindriven.toodledo;
 
-import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
-
 public class GetDeletedTasksRequest extends Request {
 
 	public final static String TAG = GetDeletedTasksRequest.class.getSimpleName();
@@ -9,8 +7,8 @@ public class GetDeletedTasksRequest extends Request {
 	
 	private final String url;
 
-	public GetDeletedTasksRequest(Session session, long after) {
-		super(session, RequestMethod.GET);
+	public GetDeletedTasksRequest(Session session, long after, RestClientFactory factory) {
+		super(session, factory, RequestMethod.GET);
 		this.url = String.format(URL_TEMPLATE, getAuthenticationKey(), after);
 	}
 

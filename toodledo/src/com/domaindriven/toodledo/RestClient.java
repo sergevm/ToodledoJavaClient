@@ -1,7 +1,5 @@
 package com.domaindriven.toodledo;
 
-import com.domaindriven.toodledo.HttpRestClient.RequestMethod;
-
 public interface RestClient {
 
 	public abstract String getResponse();
