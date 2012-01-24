@@ -3,7 +3,7 @@ package com.domaindriven.toodledo;
 public class GetUpdatedTasksRequest extends Request {
 
 	private final static String TAG = GetUpdatedTasksRequest.class.getSimpleName();
-	public final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/get.php?key=%s;modafter=%d";
+	public final static String URL_TEMPLATE = "http://api.toodledo.com/2/tasks/get.php?key=%s;modafter=%d;fields=duedate,duetime";
 	
 	private final String url;
 

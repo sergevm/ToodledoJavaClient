@@ -26,9 +26,12 @@ public class UpdateTasksRequest extends Request {
 	@Override
 	public String execute() throws Exception {
 		
-		session.Log(TAG, getUrl());
 		
 		String body = formatJSON();
+
+		session.Log(TAG, getUrl());
+		session.Log(TAG, body);
+		
 		addParameter("tasks", body);
 		String response = super.execute();
 		
@@ -49,7 +52,18 @@ public class UpdateTasksRequest extends Request {
 			.name("id")
 			.value(task.getId())
 			.name("title")
-			.value(task.getTitle());
+			.value(task.getTitle())
+			.name("note")
+			.value(task.getNote())
+			.name("completed")
+			.value(task.getCompleted());
+			
+			if(task.getDueDate() > 0) {
+				jsonWriter.name("duedate")
+				.value(task.getDueDate())
+				.name("duetime")
+				.value(task.getDueDate());
+			}
 			
 			jsonWriter.endObject();
 		}

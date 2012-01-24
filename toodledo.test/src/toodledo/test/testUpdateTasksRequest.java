@@ -19,7 +19,7 @@ public class testUpdateTasksRequest {
 	final static String SESSION_KEY = "mykey";
 	
 	final static String EMPTYJSON = "";
-	final static String JSON = "[{\"id\":\"1\",\"title\":\"Title 1\"}]";
+	final static String JSON = "[{\"id\":\"1\",\"title\":\"Title 1\",\"note\":null,\"completed\":100000}]";
 	final static String ERRORJSON = "{\"errorCode\":1,\"errorDesc\":\"Empty key\"}";
 	
 	Session session;
@@ -43,7 +43,7 @@ public class testUpdateTasksRequest {
 		Task task = new Task();
 		task.setId("1");
 		task.setTitle("Title 1");
-		task.setCompleted(true);
+		task.setCompleted(100000);
 		
 		tasks.add(task);
 		

@@ -1,8 +1,6 @@
 package toodledo.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +20,7 @@ public class testAddTasksResponse {
 	
 	private static final String JSONTEMPLATE = 
 		"[{\"id\":\"x\",\"title\":\"title 1\",\"modified\":%d,\"completed\":0,\"folder\":\"0\"}," + 
-		"{\"id\":\"y\",\"title\":\"title 2\",\"modified\":%d,\"completed\":1,\"folder\":\"0\"}]";
+		"{\"id\":\"y\",\"title\":\"title 2\",\"modified\":%d,\"completed\":1000,\"folder\":\"0\"}]";
 	
 	long date;
 	Session session;
@@ -33,7 +31,7 @@ public class testAddTasksResponse {
 	@Before 
 	public void setup() throws Exception
 	{
-		date = Calendar.getInstance().getTimeInMillis();
+		date = Calendar.getInstance().getTimeInMillis() / 1000;
 		session = mock(Session.class);
 		request = mock(Request.class);
 		when(request.execute()).thenReturn(String.format(JSONTEMPLATE, date, date));
@@ -50,7 +48,7 @@ public class testAddTasksResponse {
 		assertEquals("x", tasks.get(0).getId());
 		assertEquals("title 1", tasks.get(0).getTitle());
 		assertEquals(date, tasks.get(0).getModified());
-		assertFalse(tasks.get(0).getCompleted());
-		assertTrue(tasks.get(1).getCompleted());
+		assertEquals(0, tasks.get(0).getCompleted());
+		assertEquals(1000, tasks.get(1).getCompleted());
 	}
 }

@@ -20,10 +20,12 @@ public class AddTasksRequest extends Request {
 
 	@Override
 	public String execute() throws Exception {
+				
+		String body = formatJSON();
 		
 		session.Log(TAG, getUrl());
-		
-		String body = formatJSON();
+		session.Log(TAG, body);
+
 		addParameter("tasks", body);
 		String response = super.execute();
 		
@@ -39,7 +41,20 @@ public class AddTasksRequest extends Request {
 		
 		for(Task task : tasks) {
 			jsonWriter.beginObject();
-			jsonWriter.name("title").value(task.getTitle());
+			
+			jsonWriter
+			.name("title").value(task.getTitle())
+			.name("completed").value(task.getCompleted());
+			
+			if(task.getNote() != null) {
+				jsonWriter.name("note").value(task.getNote());
+			}
+			
+			if(task.getDueDate() > 0) {
+				jsonWriter.name("duedate").value(task.getDueDate())
+				.name("duetime").value(task.getDueDate());
+			}
+			
 			jsonWriter.endObject();
 		}
 		

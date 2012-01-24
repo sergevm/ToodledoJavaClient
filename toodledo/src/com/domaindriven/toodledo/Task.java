@@ -4,8 +4,10 @@ public class Task {
 
 	private String id;
 	private String title;
-	private Boolean completed;
 	private long modified;
+	private long dueDate;
+	private String note;
+	private long completed;
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -31,11 +33,27 @@ public class Task {
 		return modified;
 	}
 
-	public void setCompleted(Boolean completed) {
+	public void setCompleted(long completed) {
 		this.completed = completed;
 	}
 
-	public Boolean getCompleted() {
+	public long getCompleted() {
 		return completed;
+	}
+
+	public long getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(long dueTime) {
+		this.dueDate = dueTime;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

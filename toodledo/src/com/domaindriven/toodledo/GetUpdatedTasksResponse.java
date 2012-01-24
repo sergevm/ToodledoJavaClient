@@ -46,6 +46,11 @@ public class GetUpdatedTasksResponse extends Response<List<Task>> {
 			task.setTitle(item.getAsJsonPrimitive("title").getAsString());
 			task.setModified(item.getAsJsonPrimitive("modified").getAsLong());
 			
+			task.setDueDate(getOptionalJsonAsLong(item, "duetime"));
+			if(task.getDueDate() == 0) {
+				task.setDueDate(getOptionalJsonAsLong(item, "duedate"));
+			}
+			
 			tasks.add(task);
 		}
 	

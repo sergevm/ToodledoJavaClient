@@ -26,7 +26,7 @@ public class testAddTasksRequest {
 	
 	long date;
 	
-	final static String JSON = "[{\"title\":\"title 1\"},{\"title\":\"title 2\"}]";
+	final static String JSON = "[{\"title\":\"title 1\",\"completed\":0,\"note\":\"note 1\"},{\"title\":\"title 2\",\"completed\":0}]";
 	
 	@Before
 	public void before() {
@@ -43,6 +43,7 @@ public class testAddTasksRequest {
 
 		Task task = new Task();
 		task.setTitle("title 1");
+		task.setNote("note 1");
 
 		tasks.add(task);
 		

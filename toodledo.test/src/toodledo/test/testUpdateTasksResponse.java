@@ -1,8 +1,6 @@
 package toodledo.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,8 +44,7 @@ public class testUpdateTasksResponse {
 		List<Task> tasks = response.parse();
 		
 		assertEquals(2, tasks.size());
-		assertFalse(tasks.get(0).getCompleted());
-		assertTrue(tasks.get(1).getCompleted());
+		assertEquals(1, tasks.get(1).getCompleted());
 	}
 	
 	@Test

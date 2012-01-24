@@ -38,8 +38,14 @@ public class UpdateTasksResponse extends Response<List<Task>> {
 			task.setId(jsonTask.getAsJsonPrimitive("id").getAsString());
 			task.setTitle(jsonTask.getAsJsonPrimitive("title").getAsString());
 			task.setModified(jsonTask.getAsJsonPrimitive("modified").getAsLong());
-			task.setCompleted(GsonHelpers.parseBoolean(jsonTask, "completed"));
+			task.setCompleted(getOptionalJsonAsLong(jsonTask, "completed"));
+			task.setNote(getOptionalJsonAsString(jsonTask, "note"));
 
+			task.setDueDate(getOptionalJsonAsLong(jsonTask, "duetime"));
+			if(task.getDueDate() == 0) {
+				task.setDueDate(getOptionalJsonAsLong(jsonTask, "duedate"));
+			}
+			
 			tasks.add(task);
 		}
 

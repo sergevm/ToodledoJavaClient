@@ -1,6 +1,7 @@
 package com.domaindriven.toodledo;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public abstract class Response<T> {
 
@@ -35,11 +36,27 @@ public abstract class Response<T> {
 		return session;
 	}
 
-	/**
-	 * @param jsonObject
-	 * @return
-	 */
 	protected boolean isError(JsonObject jsonObject) {
 		return jsonObject.has("errorCode") && jsonObject.has("errorDesc");
+	}
+	
+	protected long getOptionalJsonAsLong(final JsonObject target, final String key) {
+		
+		JsonPrimitive primitive = target.getAsJsonPrimitive(key);
+		if(primitive != null) {
+			return primitive.getAsLong();
+		}
+		
+		return 0;
+	}
+
+	protected String getOptionalJsonAsString(final JsonObject target, final String key) {
+		
+		JsonPrimitive primitive = target.getAsJsonPrimitive(key);
+		if(primitive != null) {
+			return primitive.getAsString();
+		}
+		
+		return null;
 	}
 }
