@@ -42,6 +42,9 @@ public abstract class Response<T> {
 	
 	protected long getOptionalJsonAsLong(final JsonObject target, final String key) {
 		
+		if(target.has(key) == false) return 0;
+		if(target.get(key).isJsonNull()) return 0;
+		
 		JsonPrimitive primitive = target.getAsJsonPrimitive(key);
 		if(primitive != null) {
 			return primitive.getAsLong();
@@ -52,7 +55,11 @@ public abstract class Response<T> {
 
 	protected String getOptionalJsonAsString(final JsonObject target, final String key) {
 		
+		if(target.has(key) == false) return null;
+		if(target.get(key).isJsonNull()) return null;
+		
 		JsonPrimitive primitive = target.getAsJsonPrimitive(key);
+		
 		if(primitive != null) {
 			return primitive.getAsString();
 		}

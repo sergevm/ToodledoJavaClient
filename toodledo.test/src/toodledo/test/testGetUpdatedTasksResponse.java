@@ -18,8 +18,8 @@ import com.domaindriven.toodledo.Task;
 
 public class testGetUpdatedTasksResponse {
 	final static String JSON = "[{\"num\":\"2\"},{\"id\":\"1234\",\"title\":\"Title 1\",\"modified\":\"1234567891\",\"completed\":0," + 
-	"\"folder\":\"123\",\"star\":\"0\",\"priority\":\"0\"},{\"id\":\"1235\",\"title\":\"Title 1\",\"modified\":\"1234567891\",\"completed\":0," + 
-	"\"folder\":\"345\",\"star\":\"0\",\"priority\":\"0\"}]";	
+	"\"folder\":\"123\",\"star\":\"0\",\"priority\":\"0\",\"note\":null},{\"id\":\"1235\",\"title\":\"Title 1\",\"modified\":\"1234567891\",\"completed\":0," + 
+	"\"folder\":\"345\",\"star\":\"0\",\"priority\":\"0\",\"note\":null}]";	
 	
 	private static final String ERRORJSON = "{\"errorCode\":1,\"errorDesc\":\"Empty key\"}";
 	private final static String EMPTYJSON = "";

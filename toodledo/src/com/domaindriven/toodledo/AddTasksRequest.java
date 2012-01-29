@@ -46,7 +46,7 @@ public class AddTasksRequest extends Request {
 			.name("title").value(task.getTitle())
 			.name("completed").value(task.getCompleted());
 			
-			if(task.getNote() != null) {
+			if(task.getNote() != null && task.getNote().length() > 0) {
 				jsonWriter.name("note").value(task.getNote());
 			}
 			

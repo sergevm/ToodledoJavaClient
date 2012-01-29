@@ -53,10 +53,16 @@ public class UpdateTasksRequest extends Request {
 			.value(task.getId())
 			.name("title")
 			.value(task.getTitle())
-			.name("note")
-			.value(task.getNote())
 			.name("completed")
 			.value(task.getCompleted());
+
+			if(task.getNote() != null && task.getNote().length() > 0) {
+				jsonWriter.name("note")
+				.value(task.getNote());
+			}
+			else {
+				jsonWriter.name("note").nullValue();
+			}
 			
 			if(task.getDueDate() > 0) {
 				jsonWriter.name("duedate")

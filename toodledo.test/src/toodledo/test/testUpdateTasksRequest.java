@@ -19,7 +19,7 @@ public class testUpdateTasksRequest {
 	final static String SESSION_KEY = "mykey";
 	
 	final static String EMPTYJSON = "";
-	final static String JSON = "[{\"id\":\"1\",\"title\":\"Title 1\",\"note\":null,\"completed\":100000}]";
+	final static String JSON = "[{\"id\":\"1\",\"title\":\"Title 1\",\"completed\":100000,\"note\":null}]";
 	final static String ERRORJSON = "{\"errorCode\":1,\"errorDesc\":\"Empty key\"}";
 	
 	Session session;
