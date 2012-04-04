@@ -45,7 +45,6 @@ public class testLocalTimeToGMTConversions {
 	@Before
 	public void setup() {
 		gmt_formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//		gmt_formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}	
 	
 	@Test
