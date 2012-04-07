@@ -28,7 +28,7 @@ public class testSessionTokenRequest {
 		session = mock(Session.class);
 		factory = mock(RestClientFactory.class);
 		when(factory.create(any(String.class))).thenReturn(client);
-		request = new SessionTokenRequest("serge", log, factory);
+		request = new SessionTokenRequest("serge", "id", "token", log, factory);
 	}
 	
 	@Test

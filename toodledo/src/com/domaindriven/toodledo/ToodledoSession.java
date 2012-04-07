@@ -15,16 +15,22 @@ public class ToodledoSession implements Session {
 	private static Calendar sessionTokenTime;
 	private static String sessionToken;
 	private static String key;
+	
+	private String appId;
+	private String appToken;
+	
 	private String user;
 	
 	private static Log log;
 	private static RestClientFactory factory;
 	
-	public static Session create(final String user, final String password, final Log log, final RestClientFactory factory) {
+	public static Session create(final String user, final String password, final String apiKey, final String apiToken, final Log log, final RestClientFactory factory) {
 		ToodledoSession.log = log;
 		ToodledoSession.factory = factory;
-		ToodledoSession session = new ToodledoSession(user);
+
+		ToodledoSession session = new ToodledoSession(user, apiKey, apiToken);
 		session.create(password);
+		
 		return session;
 	}
 		
@@ -38,8 +44,10 @@ public class ToodledoSession implements Session {
 		return user;
 	}
 
-	private ToodledoSession(final String userId) {
+	private ToodledoSession(final String userId, final String appId, final String appToken) {
 		this.user = userId;
+		this.appId = appId;
+		this.appToken = appToken;
 	}
 
 	private void create(final String password) {
@@ -66,7 +74,7 @@ public class ToodledoSession implements Session {
 
 	private String requestSessionToken(final String userId) {
 
-		SessionTokenRequest request = new SessionTokenRequest(userId, log, factory);
+		SessionTokenRequest request = new SessionTokenRequest(userId, this.appId, this.appToken, log, factory);
 		SessionTokenResponse response = new SessionTokenResponse(log, request);
 		
 		return response.parse();
@@ -74,7 +82,7 @@ public class ToodledoSession implements Session {
 	
 	private String calculateKeyFrom(final String password, final String sessionToken) {
 		try {
-			return MD5Helper.calculate(MD5Helper.calculate(password) + Constants.TOODLEDO_APPTOKEN + sessionToken);
+			return MD5Helper.calculate(MD5Helper.calculate(password) + this.appToken + sessionToken);
 		} catch (NoSuchAlgorithmException e) {
 			log.log(TAG, e.getMessage());
 			e.printStackTrace();
