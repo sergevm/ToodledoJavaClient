@@ -2,7 +2,6 @@ package toodledo.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
@@ -13,6 +12,7 @@ import org.junit.Test;
 
 import com.domaindriven.toodledo.Request;
 import com.domaindriven.toodledo.Session;
+import com.domaindriven.toodledo.SyncException;
 import com.domaindriven.toodledo.Task;
 import com.domaindriven.toodledo.UpdateTasksResponse;
 
@@ -57,13 +57,10 @@ public class testUpdateTasksResponse {
 		assertEquals(0, tasks.size());
 	}
 	
-	@Test
+	@Test(expected=SyncException.class)
 	public void then_error_message_returned_is_handled() throws Exception {
+		
 		when(request.execute()).thenReturn(ERRORJSON);
-		
-		List<Task> tasks = response.parse();
-		
-		assertEquals(0, tasks.size());
-		verify(session).Log(UpdateTasksResponse.TAG, ERRORJSON);
+		response.parse();
 	}
 }

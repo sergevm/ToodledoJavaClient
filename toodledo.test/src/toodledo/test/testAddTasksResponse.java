@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.domaindriven.toodledo.AddTasksResponse;
 import com.domaindriven.toodledo.Request;
+import com.domaindriven.toodledo.Response;
 import com.domaindriven.toodledo.Session;
 import com.domaindriven.toodledo.Task;
 import com.domaindriven.toodledo.ToodledoSession;
@@ -26,7 +27,7 @@ public class testAddTasksResponse {
 	Session session;
 	Request request;
 	ToodledoSession.Log log;
-	AddTasksResponse response;
+	Response<List<Task>> response;
 	
 	@Before 
 	public void setup() throws Exception

@@ -12,6 +12,7 @@ import com.domaindriven.toodledo.DeleteTasksResponse;
 import com.domaindriven.toodledo.Request;
 import com.domaindriven.toodledo.Response;
 import com.domaindriven.toodledo.Session;
+import com.domaindriven.toodledo.SyncException;
 
 public class testDeleteTasksResponse {
 
@@ -52,13 +53,10 @@ public class testDeleteTasksResponse {
 		assertEquals(0, taskIds.size());
 	}
 	
-	@Test
+	@Test(expected=SyncException.class)
 	public void then_error_message_returned_is_handled() throws Exception {
+
 		when(request.execute()).thenReturn(ERRORJSON);
-		
-		List<String> taskIds = response.parse();
-		
-		assertEquals(0, taskIds.size());
-		verify(session).Log(DeleteTasksResponse.TAG, ERRORJSON);
+		response.parse();
 	}
 }

@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;

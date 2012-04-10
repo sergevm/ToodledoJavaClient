@@ -1,5 +1,7 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+
 import com.google.gson.Gson;
 
 public class AccountResponse extends Response<Account> {
@@ -14,7 +16,7 @@ public class AccountResponse extends Response<Account> {
 	}
 
 	@Override
-	public Account parse() throws Exception {
+	public Account parse() throws SyncException, IOException {
 		if (getResponse() == null || getResponse() == "") {
 			session.Log(TAG, "Get request for account info returned empty response");
 			return null;

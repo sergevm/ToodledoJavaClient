@@ -1,5 +1,8 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -14,9 +17,9 @@ public abstract class Response<T> {
 		this.session = session;
 	}
 
-	public abstract T parse() throws Exception;
+	public abstract T parse() throws SyncException, IOException;
 
-	protected String getResponse() throws Exception {
+	protected String getResponse() throws SyncException, IOException {
 		if (response == null) {
 			response = request.execute();
 		}
@@ -38,6 +41,15 @@ public abstract class Response<T> {
 
 	protected boolean isError(JsonObject jsonObject) {
 		return jsonObject.has("errorCode") && jsonObject.has("errorDesc");
+	}
+	
+	protected boolean isError(JsonElement jsonElement) {
+		if(!jsonElement.isJsonObject()) {
+			return false;
+		}
+		
+		JsonObject obj = (JsonObject)jsonElement;
+		return isError(obj);
 	}
 	
 	protected long getOptionalJsonAsLong(final JsonObject target, final String key) {
@@ -65,5 +77,21 @@ public abstract class Response<T> {
 		}
 		
 		return null;
+	}
+
+	protected boolean HandleErrors(JsonElement json) throws SyncException {
+	
+		if(isError(json)) {
+			throwSyncException(json);
+			return true;
+		}
+		
+		return false;
+	}
+
+	private void throwSyncException(JsonElement json) throws SyncException {
+		JsonObject obj = (JsonObject)json;
+		String message = obj.getAsJsonPrimitive("errorDesc").getAsString();
+		throw new SyncException(message);
 	}
 }

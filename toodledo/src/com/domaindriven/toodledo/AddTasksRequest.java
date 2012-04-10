@@ -19,7 +19,7 @@ public class AddTasksRequest extends Request {
 	}
 
 	@Override
-	public String execute() throws Exception {
+	public String execute() throws IOException, SyncException {
 				
 		String body = formatJSON();
 		

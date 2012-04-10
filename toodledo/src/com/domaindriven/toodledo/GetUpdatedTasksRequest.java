@@ -1,5 +1,7 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+
 public class GetUpdatedTasksRequest extends Request {
 
 	private final static String TAG = GetUpdatedTasksRequest.class.getSimpleName();
@@ -18,7 +20,7 @@ public class GetUpdatedTasksRequest extends Request {
 	}
 
 	@Override
-	public String execute() throws Exception {
+	public String execute() throws IOException, SyncException {
 		session.Log(TAG, getUrl());
 		return super.execute();
 	}

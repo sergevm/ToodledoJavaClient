@@ -1,5 +1,7 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
+
 import com.google.gson.annotations.SerializedName;
 
 
@@ -12,20 +14,19 @@ public class Account {
 
 	private static final String TAG = Account.class.getSimpleName();
 
-	public static Account create(final Session session, RestClientFactory factory) {
+	public static Account create(final Session session, RestClientFactory factory) throws IOException, SyncException {
 
 		session.Log(TAG, "Getting account info");
 
-		try {
-			AccountRequest request = new AccountRequest(session, factory);
-			AccountResponse response = new AccountResponse(session, request);
-			session.Log(TAG, "Account info retrieved");
-			return response.parse();
-		} catch (Exception e) {
-			e.printStackTrace();
+		AccountRequest request = new AccountRequest(session, factory);
+		AccountResponse response = new AccountResponse(session, request);
+		Account account = response.parse();
+		
+		if(account == null) {
+			throw new SyncException("Unable to retrieve the Toodledo account.");
 		}
-
-		return null;
+		
+		return account;
 	}
 
 	public Account() {

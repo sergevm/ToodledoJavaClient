@@ -24,7 +24,7 @@ public class DeleteTasksRequest extends Request {
 	}
 	
 	@Override
-	public String execute() throws Exception {
+	public String execute() throws IOException, SyncException {
 		
 		session.Log(TAG, getUrl());
 		

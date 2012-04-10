@@ -1,5 +1,6 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,15 @@ public class DeleteTasksResponse extends Response<List<String>> {
 	}
 
 	@Override
-	public List<String> parse() throws Exception {
+	public List<String> parse() throws SyncException, IOException {
 		
 		session.Log(TAG, getResponse());
 
 		List<String> result = new ArrayList<String>();
 
 		JsonElement json = new JsonParser().parse(getResponse());
+		
+		if(HandleErrors(json)) return null;
 		
 		if(json.isJsonArray() == false) {
 			return result;

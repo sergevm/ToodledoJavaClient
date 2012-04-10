@@ -1,5 +1,6 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
@@ -24,7 +25,7 @@ public class ToodledoSession implements Session {
 	private static Log log;
 	private static RestClientFactory factory;
 	
-	public static Session create(final String user, final String password, final String apiKey, final String apiToken, final Log log, final RestClientFactory factory) {
+	public static Session create(final String user, final String password, final String apiKey, final String apiToken, final Log log, final RestClientFactory factory) throws SyncException, IOException {
 		ToodledoSession.log = log;
 		ToodledoSession.factory = factory;
 
@@ -50,12 +51,17 @@ public class ToodledoSession implements Session {
 		this.appToken = appToken;
 	}
 
-	private void create(final String password) {
+	private void create(final String password) throws SyncException, IOException {
 		if (isExpired()) {
 			log.log(TAG, "Session token expired. Retrieving a new token ...");
 	
 			sessionTokenTime = Calendar.getInstance();
 			sessionToken = requestSessionToken(getUserId());
+			
+			if(sessionToken == null) {
+				throw new SyncException("Unable to retrieve Toodledo session token.");
+			}
+			
 			key = calculateKeyFrom(password, sessionToken);
 	
 			log.log(TAG, "Session token requested and acquired.");
@@ -72,7 +78,7 @@ public class ToodledoSession implements Session {
 		return (sessionTokenAcquisitionAge > A_LITTLE_LESS_THAN_4_HOURS);
 	}
 
-	private String requestSessionToken(final String userId) {
+	private String requestSessionToken(final String userId) throws SyncException, IOException {
 
 		SessionTokenRequest request = new SessionTokenRequest(userId, this.appId, this.appToken, log, factory);
 		SessionTokenResponse response = new SessionTokenResponse(log, request);

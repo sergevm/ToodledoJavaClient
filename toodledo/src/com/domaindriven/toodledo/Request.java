@@ -1,5 +1,6 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public abstract class Request {
@@ -17,7 +18,7 @@ public abstract class Request {
 		this.parameters = new HashMap<String, String>();
 	}
 
-	public String execute() throws Exception {
+	public String execute() throws SyncException, IOException {
 		client = clientFactory.create(getUrl());
 
 		for (String key : parameters.keySet()) {

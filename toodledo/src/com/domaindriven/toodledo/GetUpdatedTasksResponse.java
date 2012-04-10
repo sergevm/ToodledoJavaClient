@@ -1,5 +1,6 @@
 package com.domaindriven.toodledo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +18,17 @@ public class GetUpdatedTasksResponse extends Response<List<Task>> {
 	}
 
 	@Override
-	public List<Task> parse() throws Exception {
+	public List<Task> parse() throws SyncException, IOException {
 		
 		session.Log(TAG, getResponse());
 		
 		List<Task> tasks = new ArrayList<Task>();
 		
 		JsonElement element = new JsonParser().parse(getResponse());
-		if(element.isJsonArray() == false) {
-			return tasks;
-		}
+		
+		if(HandleErrors(element)) return tasks;
+		
+		if(element.isJsonArray() == false) return tasks;
 		
 		JsonArray jsonArray = element.getAsJsonArray();
 		

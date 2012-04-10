@@ -2,7 +2,6 @@ package toodledo.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import com.domaindriven.toodledo.GetDeletedTasksResponse;
 import com.domaindriven.toodledo.Request;
 import com.domaindriven.toodledo.Session;
+import com.domaindriven.toodledo.SyncException;
 
 
 public class testGetDeletedTasksResponse {
@@ -53,13 +53,10 @@ public class testGetDeletedTasksResponse {
 		assertEquals(0, taskIds.size());
 	}
 	
-	@Test
+	@Test(expected=SyncException.class)
 	public void then_error_message_returned_is_handled() throws Exception {
-		when(request.execute()).thenReturn(ERRORJSON);
 		
-		List<String> taskIds = response.parse();
-		
-		assertEquals(0, taskIds.size());
-		verify(session).Log(GetDeletedTasksResponse.TAG, ERRORJSON);
+		when(request.execute()).thenReturn(ERRORJSON);		
+		response.parse();
 	}
 }
